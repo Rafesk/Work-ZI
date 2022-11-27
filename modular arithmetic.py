@@ -1,21 +1,17 @@
-a = 3
-b = 3639868
+a = 5
+b = 7
+#Расширенный алгоритм Евклида
+def gcd_extended(num1, num2):
+    if num1 == 0:
+        return (num2, 0, 1)
+    else:
+        div, x, y = gcd_extended(num2 % num1, num1)
+    return (div, y - (num2 // num1) * x, x)
+#обратный элемент
+def mulinv(b, n):
+    g, x, y = gcd_extended(b, n)
+    print(f'Делитель равен {g}, x = {x}, y = {y}')
+    if g == 1:
+        return x % n
 
-def ibrel(a,b):
-    a1 = b
-    q = 0
-    r = 10000000
-    x1,x2,y1,y2 = 1,0,0,1
-    x,y = 0, 0
-    while(r > 1):
-        q = a // b
-        r = a % b
-        x = x1 - q * x2
-        y = y1 - q * y2
-        x1, y1 = x2, y2
-        x2, y2 = x, y
-        a = b
-        b = r
-    obrEL = abs(x2) % a1
-    return obrEL
-#print(ibrel)
+print(mulinv(a,b))

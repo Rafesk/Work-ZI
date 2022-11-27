@@ -2,12 +2,11 @@ from winreg import QueryInfoKey
 
 
 global key, text
-text = "1aabefc9e901d7d3" #"ef8224d4d3e53497" 
+text = "ef8224d4d3e53497" 
 #"9a0573bd4b2d295c"
 
 
-key = ["d6c31d07","632628de","ecdbae99","6ffd7bfd","c58c398b","6ae57d79","c7982ec3","cd210f3a"]
-#["df6a47bf" ,"efec06c5","22cb1c49", "eff6dca3", "afaab2ac","17025724","4cdbf718","82e00a7b"]
+key = ["df6a47bf" ,"efec06c5","22cb1c49", "eff6dca3", "afaab2ac","17025724","4cdbf718","82e00a7b"]
 #["18a75dcf","2c1ee560","14621875","7206bfba","358ea8f4","e36ed553","18fb69db","0ec9b5b9"]
 
 
