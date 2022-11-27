@@ -1,25 +1,22 @@
-from modular_arithmetic import gcd_extended
-
-
-def gcd_extendedMN(num1, num2):
-    if int(str(num1),2) == 0:
-        return (num2, 0, 1)
-    else:
-        print(num1,num2)
-        div, x, y = gcd_extendedMN(num2, bin(int(str(num1),2) % int(str(num2),2))[2:])
-    return (div, bin(int(str(y),2) ^ int(str(bin(int(str(bin(int(str(num2),2) // int(str(num1),2))),2) * int(str(x),2))),2)), x)
-#print(gcd_extendedMN("1010111","100011011"))
 def perenos(abs, k):
     for i in range(1, len(abs)):
         abs[i-1]=abs[i]
     abs[len(abs)-1] = k
     return abs
 def delit(a,b):
+    if(a == b):
+        return "0","1"
     a = [int(i) for i in a] #делает из строки лист
     b = [int(i) for i in b]
+    while(a[0]==0 and (1 in a)):
+        a.pop(0)
+    while(b[0]==0 and (1 in b)):
+        b.pop(0)
     r = a[0:len(b)]
     k = len(b)
     q = [0]
+    
+    
     while(k<len(a)):      
         check = 0
         while(r[0]==0):
@@ -40,10 +37,17 @@ def delit(a,b):
                     r[i]=0
                 else:
                     r[i] = 1
+    while(r[0]==0 and (1 in r)):
+        r.pop(0)
+    while(q[0]==0 and (1 in q)):
+        q.pop(0)
     return "".join(list(map(str, r))), "".join(list(map(str, q)))
-
-
 def ymnoz(a,b):
+    a = str(a)
+    b = str(b)
+    if(a == "0" or b == "0"):
+        return 0
+
     if(len(b)>len(a)):
         a,b = b,a
 
@@ -67,9 +71,20 @@ def ymnoz(a,b):
     b = b[:len(b)-1]
     for i in range(len(b)):
         if(b[len(b)-1-i]=="1"):
-            k2 = "0"*(len(b)-3-i)+a+"0"*(i+2)
+            k2 = "0"*(len(b)-2-i)+a+"0"*(i+1)
         else:
             k2 = "0"*(len(a)+len(b)-1)
         k1 = bin(int(str(k1),2) ^ int(str(k2),2))[2:]    
     return k1
-print(ymnoz("01010111","10111111"))
+
+
+def gcd_extendedMN(num1, num2):
+    print(num1,num2)
+    if int(str(num2),2) == 0:
+        return (num1, 0, 1)
+    else:
+        
+        div, x, y = gcd_extendedMN(num2,delit(num1,num2)[0])
+    return (div, bin(int(str(y),2) ^ int(str(ymnoz(delit(str(num1),str(num2))[1], x)),2))[2:], x)
+print(delit("1010111","0010000"))
+print(gcd_extendedMN("1010111","100011011"))
