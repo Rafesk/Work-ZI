@@ -2,13 +2,19 @@ from winreg import QueryInfoKey
 
 
 global key, text
-text = "ef8224d4d3e53497"
+text = "1aabefc9e901d7d3" #"ef8224d4d3e53497" 
 #"9a0573bd4b2d295c"
-key = ["df6a47bf" ,"efec06c5","22cb1c49", "eff6dca3", "afaab2ac","17025724","4cdbf718","82e00a7b"]
+
+
+key = ["d6c31d07","632628de","ecdbae99","6ffd7bfd","c58c398b","6ae57d79","c7982ec3","cd210f3a"]
+#["df6a47bf" ,"efec06c5","22cb1c49", "eff6dca3", "afaab2ac","17025724","4cdbf718","82e00a7b"]
 #["18a75dcf","2c1ee560","14621875","7206bfba","358ea8f4","e36ed553","18fb69db","0ec9b5b9"]
+
+
 keyscelude = []#[["0"] * 8 for i in range(32)]
 Sboxes = ["4a92d80e6b1c7f53","eb4c6dfa23810759","581da342efc7609b","7da1089fe46cb253","6c715fd84a9e03b2","4ba0721d36859cfe","db413f590ae7682c","1fd057a4923e6b8c"]
 #["4a92d80e6b1c7f53","eb4c6dfa23810759","581da342efc7609b","7da1089fe46cb253","6c715fd84a9e03b2","4ba0721d36859cfe","db413f590ae7682c","1fd057a4923e6b8c"]
+
 
 #создание большого ключа
 def NewKey(keyscelude):
@@ -31,6 +37,8 @@ def WokrRaund(tl, tr,ik):#раунды
     raund = int(keyscelude[ik],16)
     k = format((int(tr,16)+raund) % (2**32),'x') # R+K mod 2^32  -- в 16-ой системе
     Sr = ""
+    if(len(str(k)) != 8): # если в начале он убрал нули
+        k = "0"*(8-len(str(k)))+k
     for i, step in enumerate(k): #перевод по S-boxes
         Sr += Sboxes[i][int(step,16)]
     SrDV = (format(int(Sr,16),'b')) #S(R) - двоичная
@@ -63,9 +71,5 @@ tr = text[(len(text)//2):len(text)] #правая часть
 for i in range(len(keyscelude)):
     tl, tr = WokrRaund(tl,tr,i)
 
-#print("LC = ",tr)
-#print("RC = ",tl)
-
-
-
-
+print("LC = ",tr)
+print("RC = ",tl)
