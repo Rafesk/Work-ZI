@@ -1,5 +1,3 @@
-a = 5
-b = 7
 #Расширенный алгоритм Евклида
 def gcd_extended(num1, num2):
     if num1 == 0:
@@ -10,8 +8,9 @@ def gcd_extended(num1, num2):
 #обратный элемент
 def mulinv(b, n):
     g, x, y = gcd_extended(b, n)
-    print(f'Делитель равен {g}, x = {x}, y = {y}')
+    #print(f'Делитель равен {g}, x = {x}, y = {y}')
     if g == 1:
         return x % n
-
-print(mulinv(a,b))
+a = 5
+b = 7
+#print(mulinv(a,b))
