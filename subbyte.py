@@ -1,10 +1,20 @@
+from math import gcd
 
-#a = [1,1,0,1,1,0,0,1,1,1,0,1,1,0,1,0,0,1,1,1,1,0,1,1,1,1,1,0,1,0,1,0,0,0,0,1,1,0,1,0,0,0,1,1,0,0,0,1,1,1,0,1,1,0,0,0,1,0,1,0,1,0,1,1]
-#b = [1,1,1,0,0,0,1,0,1,0,1,0,0,0,1,0]
-#enumerate(a): 
 
-#деление многочлена [] -лист
+def perenos(abs, k):
+    for i in range(1, len(abs)):
+        abs[i-1]=abs[i]
+    abs[len(abs)-1] = k
+    return abs
 def delit(a,b):
+    if(a == b):
+        return "0","1"
+    a = [int(i) for i in a] #делает из строки лист
+    b = [int(i) for i in b]
+    while(a[0]==0 and (1 in a)):
+        a.pop(0)
+    while(b[0]==0 and (1 in b)):
+        b.pop(0)
     r = a[0:len(b)]
     k = len(b)
     q = [0]
@@ -28,17 +38,18 @@ def delit(a,b):
                     r[i]=0
                 else:
                     r[i] = 1
-    return r, q
+    while(r[0]==0 and (1 in r)):
+        r.pop(0)
+    while(q[0]==0 and (1 in q)):
+        q.pop(0)
+    return "".join(list(map(str, r))), "".join(list(map(str, q)))
 
-#перестановка чисел и добавление ещё одного элемента из a        
-def perenos(abs, k):
-    for i in range(1, len(abs)):
-        abs[i-1]=abs[i]
-    abs[len(abs)-1] = k
-    return abs
-
-#умножение многочлена ""  -строка
 def ymnoz(a,b):
+    a = str(a)
+    b = str(b)
+    if(a == "0" or b == "0"):
+        return 0
+
     if(len(b)>len(a)):
         a,b = b,a
 
@@ -59,82 +70,70 @@ def ymnoz(a,b):
     if(len(b) == 2):
         return bin(int(str(k1),2) ^ int(str(k2),2))[2:]
     
-    b = b[:len(b)-2]
+    b = b[:len(b)-1]
     for i in range(len(b)):
-        if(b[len(b)-1]=="1"):
-            k2 = "0"*(len(b)-3-i)+a+"0"*(i+2)
+        if(b[len(b)-1-i]=="1"):
+            k2 = "0"*(len(b)-2-i)+a+"0"*(i+1)
         else:
             k2 = "0"*(len(a)+len(b)-1)
         k1 = bin(int(str(k1),2) ^ int(str(k2),2))[2:]    
     return k1
 
-#x = x1-q*x2
-#y = y1 -q*y2
-#[] - лист
-def subbyte(a,b):
-    a1 = b 
-    r = a[0:len(b)]
-    q = [0]
-    r1 = []
-    x1, x2 = "1", "0"
-    y1, y2 = "0", "1"
-    x,y = "0","0"
-    while(len(r) != 1): # основной цикл алгоритма Эйлера
-        while(a[0]==0):
-            a.pop(0)
-        while(b[0]==0):
-            b.pop(0)    
-        if(len(a)<len(b)):
-            q = [0]
-            r = a
-        else:
-            r1 = r
-            r, q = delit(a,b)
-        q1 = list(map(str, q))
-        q1 = "".join(q1)
-        x = int(str(x1),2) ^ int(ymnoz(q1,x2),2)
-        y = int(str(y1),2) ^ int(ymnoz(q1,y2),2)
-        x1, y1 = x2, y2
-        x2, y2 = bin(x)[2:], bin(y)[2:]
-        #print(bin(x)[2:],bin(y)[2:]) #последние x и y
-        if(1 not in r):
-            break
-        while(r[0]==0):
-            r.pop(0)
-        a = b
-        b = r
-    if(1 not in r):
-        return "не существует"
+def XOR(num1,num2):
+    if(len(num1)!=len(num2)):
+        prefix = (num1 if len(num1)>len(num2) else num2)[:(abs(len(num1)-len(num2)))]
     else:
-        obrEl = bin(int(x1,2) % int("".join(list(map(str,a1))),2))[2:]
-        return obrEl
+        prefix = ""
+    num3 =""
+    for i in range(min(len(num1),len(num2))):
+        if(num1[len(num1)-1-i] == num2[len(num2)-1-i]):
+            num3 = num3 + "0"
+        else:
+            num3 = num3 + "1"
+    out = prefix + num3[::-1]
+    while(out[0]=="0" and ("1" in out )):
+        out = out[1:len(out)]
+    return out
 
-#x*a+y*b=1
-astart = "1101011000001111" 
-bstart = "0101010111110011"
-a = [int(i) for i in astart] #делает из строки лист
-b = [int(i) for i in bstart]
 
-#нахождение обратного элемента
-#print("Обратный элемент = ",(int(subbyte(a,b),2)*a % b)
+def subbyte(num1, num2):
+    n = num2
+    r= delit(num1,num2)[0]
+    q = delit(num1,num2)[1]
+    x1,x2,y1,y2= 1,0,0,1
+    x = XOR(str(ymnoz(q,x2)),str(x1))
+    y = XOR(str(ymnoz(q,y2)),str(y1))
+    while(True):
+        r= str(delit(num1,num2)[0])
+        q = delit(num1,num2)[1]
+        x = XOR(str(ymnoz(q,x2)),str(x1))
+        y = XOR(str(ymnoz(q,y2)),str(y1))
+        x1,y1 =x2,y2
+        x2,y2 = x,y
+        num1 = num2
+        num2 = r
+        if(r=="1" or r=="0"):
+            break
+    return r,x,y, delit(x,n)[0]
 
-#деление многочленов
-r,q = delit(a,b)
-r = "".join(list(map(str, r))) #делает из листа строку
-q = "".join(list(map(str, q)))
-print("Остаток = ", r," Целое = ",q)
+a = "1101100111011010011110111110101000011010001100011101100010101011"
+# 3 - 1101011000001111
+b = "1110001010100010"
+# 3 - 0101010111110011
+sub = subbyte(a,b)
+print(f"Обратный элемент = {sub[3]}, x = {sub[1]}, y = {sub[2]}, r = {sub[0]}")
 
 #4 задание
-step1 = subbyte(a,b) # a - byte, m(x) - b
+step1 = subbyte(a,b)[3] # a - byte, m(x) - b
 print("step1 = ",step1)
 a_="00011111"
 step2 = ymnoz(step1, a_) 
 print("step2 = ",step2)
 m2 = "100000001"
-step3 = bin(int(step2,2) % int(m2,2))[2:]
-print("step2_ = ",step3)
+step2_ = delit(step2,m2)[0]
+print("step2_ = ",step2_)
 b_ = "01101001"
-step4 = bin(int(step3, 2) ^ int(b_, 2))[2:] # Сейча тут XOR , если просто сложение, просто поменять на "+""
-print("step3 = ",step4)
-step5 = bin(int(step4,2) % int(m2,2))[2:]
-print("step3_ = ",step5)
+step3 = XOR(step2_,b_)# Сейча тут XOR , если просто сложение, просто поменять на "+""
+print("step3 = ",step3)
+step3_ = delit(step3,m2)[0]
+print("step3_ = ",step3_)
