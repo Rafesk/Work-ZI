@@ -11,6 +11,8 @@ def mulinv(a, b):
     #print(f'Делитель равен {g}, x = {x}, y = {y}')
     if g == 1:
         return x % b
+    else:
+        return 0
 a = 5
 b = 7
 #print(mulinv(a,b))
